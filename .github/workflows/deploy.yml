@@ -1,0 +1,97 @@
+name: Deploy
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+concurrency:
+  group: deploy-production
+  cancel-in-progress: false
+
+jobs:
+  build-and-deploy:
+    runs-on: ccmm-reardon
+    timeout-minutes: 15
+
+    steps:
+      - name: Check out
+        uses: actions/checkout@v4
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Build
+        run: pnpm build
+
+      - name: Tag current image for rollback
+        run: |
+          set -uo pipefail
+          if docker image inspect reardonsystems:latest >/dev/null 2>&1; then
+            docker tag reardonsystems:latest reardonsystems:previous
+            echo "Tagged current reardonsystems:latest as reardonsystems:previous"
+          else
+            echo "No existing image to tag"
+          fi
+
+      - name: Stage build output
+        run: |
+          set -euo pipefail
+          SITE=/opt/hosting/sites/reardonsystems
+          rm -rf "$SITE/html.new" "$SITE/html.old"
+          cp -a dist "$SITE/html.new"
+          find "$SITE/html.new" -type d -exec chmod 755 {} \;
+          find "$SITE/html.new" -type f -exec chmod 644 {} \;
+          test -f "$SITE/html.new/index.html"
+          if [ -d "$SITE/html" ]; then mv "$SITE/html" "$SITE/html.old"; fi
+          mv "$SITE/html.new" "$SITE/html"
+          echo "${GITHUB_SHA::7}" > "$SITE/.deployed-commit"
+
+      - name: Rebuild and restart container
+        run: |
+          set -euo pipefail
+          SITE=/opt/hosting/sites/reardonsystems
+          docker build -f "$SITE/Dockerfile.static" -t reardonsystems:latest "$SITE"
+          docker rm -f reardonsystems >/dev/null 2>&1 || true
+          docker run -d --name reardonsystems --restart unless-stopped -p 8085:80 reardonsystems:latest >/dev/null
+          sleep 2
+          docker ps --filter name=reardonsystems --format '{{.Names}} {{.Status}}'
+
+      - name: Verify
+        run: |
+          set -euo pipefail
+          fail=0
+          for path in / /engagements/ /company/ /blog/ /contact/ /products/specops/; do
+            code=$(curl -s -o /dev/null -w '%{http_code}' "http://127.0.0.1:8085$path" || echo fail)
+            echo "  $path -> $code"
+            [ "$code" = "200" ] || fail=1
+          done
+          code=$(curl -s -o /dev/null -w '%{http_code}' -H 'Host: reardonsystems.com' http://127.0.0.1/ || echo fail)
+          echo "  via fafo-nginx -> $code"
+          [ "$code" = "200" ] || fail=1
+          if [ "$fail" = "1" ]; then
+            echo "::error::Deployment verification failed"
+            exit 1
+          fi
+          echo "Deployed ${GITHUB_SHA::7} successfully"
+
+      - name: Roll back on failure
+        if: failure()
+        run: |
+          set -uo pipefail
+          SITE=/opt/hosting/sites/reardonsystems
+          if [ -d "$SITE/html.old" ]; then
+            rm -rf "$SITE/html"
+            mv "$SITE/html.old" "$SITE/html"
+            echo "Restored previous build output"
+          fi
+          if docker image inspect reardonsystems:previous >/dev/null 2>&1; then
+            docker rm -f reardonsystems >/dev/null 2>&1 || true
+            docker run -d --name reardonsystems --restart unless-stopped -p 8085:80 reardonsystems:previous >/dev/null
+            echo "Rolled back to reardonsystems:previous"
+          fi
