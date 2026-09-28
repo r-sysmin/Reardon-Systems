@@ -1,0 +1,35 @@
+---
+import { footerPages } from "../lib/nav";
+const year = new Date().getFullYear();
+---
+<footer class="bg-navy text-white/70">
+  <div class="mx-auto max-w-8xl grid gap-8 px-6 py-12 text-sm md:grid-cols-3">
+    <div>
+      <img src="/logo-footer.svg" alt="Reardon Systems" class="h-7 w-auto" />
+      <p class="mt-3 max-w-xs">
+        Selective cloud repatriation and private platforms for mid-market teams,
+        plus custom software when the product is the job.
+      </p>
+    </div>
+    <div>
+      <div class="font-semibold text-white">Pages</div>
+      <ul class="mt-3 space-y-2">
+        {footerPages.map((p) => (
+          <li><a href={p.href} class="hover:text-white">{p.label}</a></li>
+        ))}
+      </ul>
+    </div>
+    <div>
+      <div class="font-semibold text-white">Contact</div>
+      <ul class="mt-3 space-y-2">
+        <li><a href="mailto:hello@reardonsystems.com" class="hover:text-white">hello@reardonsystems.com</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="border-t border-white/10">
+    <div class="mx-auto flex max-w-8xl flex-wrap items-center justify-between gap-2 px-6 py-5 text-xs text-white/50">
+      <span>© {year} Reardon Systems. All rights reserved.</span>
+      <span>Not anti-cloud. Anti-default.</span>
+    </div>
+  </div>
+</footer>

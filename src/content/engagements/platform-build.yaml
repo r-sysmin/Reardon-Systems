@@ -1,0 +1,21 @@
+step: "03"
+name: Platform Build
+price: "Quoted after Assessment"
+duration: "3–9 months"
+summary: >
+  Scoped to your blast radius. The steady state, built on infrastructure you
+  control — GitOps, previews, secrets, environments, observability, DR, FinOps.
+includes:
+  - "Landing zone and network boundaries"
+  - "GitOps, previews, secrets, environments"
+  - "Observability, alerting, SLOs"
+  - "Backup, DR, and restore drills"
+  - "Cost reporting and chargeback"
+needs:
+  - "Completed Assessment with a signed business case"
+  - "Decision on blast radius and ownership model"
+  - "Named platform stakeholders"
+exit: "Production workloads running on private or hybrid infrastructure, SLOs met, cost reports live."
+cta: "Scope a Build"
+ctaHref: "/contact"
+order: 3

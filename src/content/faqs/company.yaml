@@ -1,0 +1,20 @@
+page: company
+items:
+  - q: What does Reardon Systems do?
+    a: >
+      We help mid-market teams selectively repatriate and hybridize workloads:
+      private platforms with public-cloud pace. We also build custom web and
+      mobile software when the product itself is the job.
+  - q: Is this an anti-cloud pitch?
+    a: >
+      No. It's an anti-default pitch. Cloud-first was right. Cloud-only is a tax.
+  - q: Do you only do repatriation?
+    a: >
+      No. We build custom software when the product is the job. SpecOps is our
+      own product; we build field and ops tools for clients too.
+  - q: How big is the team?
+    a: >
+      Small, senior, and hands-on. The people who scope the engagement are the
+      people who deliver it.
+  - q: How do we start?
+    a: Book an Assessment. $25K–$50K fixed scope.

@@ -1,0 +1,21 @@
+step: "01"
+name: Assessment
+price: "$25K–$50K"
+duration: "2–4 weeks"
+summary: >
+  Find the money. Bill anatomy, workload map, TCO scenarios, and a recommended
+  pilot — delivered as a document finance and engineering both sign.
+includes:
+  - "12-month bill decomposition, line by line"
+  - "Utilization and peak-to-median analysis"
+  - "Lock-in and dependency risk map"
+  - "Stay / hybrid / private TCO model"
+  - "Executive readout + pilot backlog"
+needs:
+  - "Read-only access to cloud billing and utilization data"
+  - "One technical point of contact for a 90-minute kickoff"
+  - "No engineering time beyond that"
+exit: "A signed business case with a savings range and a named pilot workload."
+cta: "Book an Assessment"
+ctaHref: "/contact"
+order: 1

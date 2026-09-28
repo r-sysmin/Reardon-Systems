@@ -1,0 +1,33 @@
+---
+import { navLinks } from "../lib/nav";
+---
+<header id="site-nav"
+  class="sticky top-0 z-40 border-b border-transparent transition">
+  <nav class="mx-auto flex h-16 max-w-8xl items-center justify-between px-6">
+    <a href="/" class="flex items-center" aria-label="Reardon Systems home">
+      <img src="/logo.svg" alt="Reardon Systems" class="h-7 w-auto" />
+    </a>
+    <div class="hidden items-center gap-8 text-sm font-medium text-slate md:flex">
+      {navLinks.map((l) => (
+        <a href={l.href} class="hover:text-navy">{l.label}</a>
+      ))}
+    </div>
+    <a href="/contact"
+       class="inline-flex items-center gap-2 rounded-full bg-electric px-5 py-3 text-sm font-semibold text-white transition hover:bg-white hover:text-navy">
+      Start with an Assessment
+    </a>
+  </nav>
+</header>
+<script>
+  const nav = document.getElementById("site-nav");
+  if (nav) {
+    const onScroll = () => {
+      const scrolled = window.scrollY > 8;
+      nav.classList.toggle("bg-white/85", scrolled);
+      nav.classList.toggle("backdrop-blur", scrolled);
+      nav.classList.toggle("border-rule", scrolled);
+    };
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+  }
+</script>

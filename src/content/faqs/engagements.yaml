@@ -1,0 +1,63 @@
+page: engagements
+items:
+  - q: Where do engagements start?
+    a: >
+      With an Assessment. $25K–$50K fixed scope, 2–4 weeks. Everything else is
+      downstream of that document.
+  - q: Is $25K–$50K for an Assessment too much for a company our size?
+    a: >
+      For a client spending $5M/year on cloud, a $35K Assessment is 0.7% of
+      annual spend. It typically identifies multiples of its own fee in
+      addressable savings, and it's priced against that outcome, not against the
+      hours. If your cloud spend is under $500K/year, the math doesn't work —
+      and we'll tell you that.
+  - q: Do we have to commit to more than the Assessment?
+    a: >
+      No. The Assessment stands alone. If the numbers don't justify a Pilot, the
+      Assessment is the engagement and we part ways cleanly.
+  - q: What if the Assessment says we should stay on public cloud?
+    a: >
+      Then we tell you that. Selective repatriation means selective. Sometimes
+      the right answer is "keep what you have, here's where the waste actually
+      is."
+  - q: How do you price Platform Build?
+    a: >
+      After Assessment. The scope depends on how many workloads move, how
+      complex the landing zone is, and how much of the platform you want to run
+      yourselves. We won't quote it before we've seen the bill.
+  - q: Why ranges instead of fixed prices?
+    a: >
+      Because bill size and workload complexity vary. Once we've seen the bill
+      and the landing zone, the range locks to a fixed scope. You're never on an
+      open-ended hourly.
+  - q: What does "infra pass-through" mean?
+    a: >
+      Hardware, colo, bandwidth, and cloud spend are separate line items at cost.
+      Our fee is for the work.
+  - q: Do you require a multi-year commitment?
+    a: >
+      No. Every engagement stands on its own. Operate is month-to-month after an
+      initial term.
+  - q: Do you take equity or work on contingency?
+    a: >
+      No. Fees are fees. The savings-share term is the only place we tie our
+      compensation to outcomes.
+  - q: Can you work with our existing platform team?
+    a: >
+      Yes. Most of what we do is pattern and tooling, not replacement. Your team
+      runs it after handoff, or we run it under Operate if you'd rather not.
+  - q: What if we don't have a platform team?
+    a: >
+      Most of our clients don't have a dedicated platform team. That's why
+      Operate exists. We build the platform, then run the steady state so your
+      existing infrastructure engineers can focus on the work only they can do.
+      If you later want to bring operations in-house, we hand off with runbooks
+      and training — no lock-in.
+  - q: How big are the teams that do this work?
+    a: >
+      Smaller than you'd expect. An Assessment is 1–2 people. A Pilot is 2–4. A
+      Platform Build is 4–8. Operate is 1–3 named people plus shared on-call.
+      The firms doing this work for mid-market clients are small, senior shops —
+      not Big Four consultancies. That's a feature, not a limitation.
+  - q: How do we start?
+    a: Show us the bill that hurts. We reply in plain language.

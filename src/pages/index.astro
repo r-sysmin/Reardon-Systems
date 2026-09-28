@@ -1,0 +1,251 @@
+---
+import { getCollection } from "astro:content";
+import Base from "../layouts/Base.astro";
+import Section from "../components/ui/Section.astro";
+import Label from "../components/ui/Label.astro";
+import Button from "../components/ui/Button.astro";
+import CostCurve from "../components/CostCurve.astro";
+const ladder = (await getCollection("ladder")).sort((a, b) => a.data.order - b.data.order);
+const faqs = (await getCollection("faqs")).find((f) => f.data.page === "homepage");
+---
+<Base
+  title="Reardon Systems — Modern Private/Hybrid Cloud for Mid-Market"
+  description="Cut cloud bill shock, escape lock-in, and run AI/GPU workloads on infrastructure you control — without losing developer velocity."
+>
+<!-- HERO -->
+<section class="relative overflow-hidden bg-navy text-white">
+  <div class="grid-lines absolute inset-0 opacity-40"></div>
+  <div class="absolute -right-40 -top-40 h-[36rem] w-[36rem] rounded-full bg-electric/20 blur-3xl"></div>
+  <div class="relative mx-auto grid max-w-8xl items-center gap-12 px-6 pb-28 pt-24 lg:grid-cols-12">
+    <div class="lg:col-span-7">
+      <div class="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/5 px-3 py-1 text-xs font-medium tracking-wide text-white/80">
+        <span class="h-1.5 w-1.5 rounded-full bg-signal"></span>
+        For mid-market teams spending $500K–$10M+ on cloud
+      </div>
+      <p class="mt-6 text-sm font-bold uppercase tracking-widest text-electric">
+        Not anti-cloud. Anti-default.
+      </p>
+      <h1 class="mt-3 text-4xl font-black leading-[1.05] tracking-tight md:text-6xl">
+        Show us the bill that hurts.
+      </h1>
+      <p class="mt-6 max-w-2xl text-lg text-white/80 md:text-xl">
+        Mid-market teams with real hyperscaler spend. Reardon Systems turns the
+        bill into a workload map, a TCO model, and a pilot that finance and
+        engineering can both defend.
+      </p>
+      <div class="mt-8 flex flex-wrap gap-3">
+        <Button href="/contact">Start with an Assessment</Button>
+        <Button href="/engagements" variant="ghost">See engagements</Button>
+      </div>
+      <div class="mt-8 flex flex-wrap items-center gap-x-6 gap-y-2 text-xs text-white/60">
+        <span>✓ Fixed scope</span>
+        <span>✓ Infra pass-through stays separate</span>
+        <span>✓ Optional savings-share</span>
+      </div>
+    </div>
+    <div class="lg:col-span-5">
+      <div class="rounded-2xl border border-white/10 bg-white/5 p-5 backdrop-blur">
+        <div class="flex items-center justify-between text-xs text-white/60">
+          <span>Annual cloud spend</span>
+          <span class="font-semibold text-signal">Cloud-only</span>
+        </div>
+        <CostCurve />
+        <div class="mt-3 grid grid-cols-3 gap-3 text-xs">
+          <div class="rounded-lg bg-white/5 p-3">
+            <div class="text-white/60">Egress</div>
+            <div class="mt-1 font-semibold">Eliminated</div>
+          </div>
+          <div class="rounded-lg bg-white/5 p-3">
+            <div class="text-white/60">GPU</div>
+            <div class="mt-1 font-semibold">Owned</div>
+          </div>
+          <div class="rounded-lg bg-white/5 p-3">
+            <div class="text-white/60">DX</div>
+            <div class="mt-1 font-semibold">Unchanged</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- PROBLEM -->
+<Section>
+  <div class="grid gap-12 lg:grid-cols-12">
+    <div class="lg:col-span-5">
+      <Label color="signal">The problem</Label>
+      <h2 class="mt-3 text-3xl font-black tracking-tight md:text-4xl">
+        The bill is not the problem. The default is.
+      </h2>
+    </div>
+    <div class="text-lg leading-relaxed text-slate lg:col-span-7">
+      <p>
+        Every dollar of steady-state compute you rent by the hour is a dollar
+        you already decided to spend. Every egress charge is a tax on your own
+        data. Every GPU provisioned just in case is margin you will never see
+        again.
+      </p>
+      <p class="mt-4">
+        And someone in the room will ask the same question:
+        <em>will developers lose velocity?</em>
+      </p>
+      <p class="mt-4 font-medium text-navy">
+        That question is the whole business. Everything else is arithmetic.
+      </p>
+    </div>
+  </div>
+</Section>
+<!-- SHIFT -->
+<Section bg="navy">
+  <div class="max-w-3xl">
+    <Label> The shift </Label>
+    <h2 class="mt-3 text-3xl font-black tracking-tight md:text-4xl">
+      Move the steady beasts off the meter.
+    </h2>
+    <p class="mt-5 text-lg text-white/80">
+      Hybrid by design. Keep public cloud where burst and managed services earn
+      their keep. Move steady, data-heavy, and GPU-bound workloads when the unit
+      economics say so — not when the ideology does.
+    </p>
+  </div>
+  <div class="mt-12 grid gap-6 md:grid-cols-2">
+    <div class="rounded-2xl border border-white/10 bg-white/5 p-8">
+      <div class="text-sm font-bold uppercase tracking-wider">What you keep</div>
+      <ul class="mt-4 space-y-2 text-white/80">
+        <li>Kubernetes, GitOps, IaC</li>
+        <li>Previews, secrets, environments</li>
+        <li>Ship rituals engineers already expect</li>
+      </ul>
+    </div>
+    <div class="rounded-2xl bg-electric p-8 text-white">
+      <div class="text-sm font-bold uppercase tracking-wider">What you gain</div>
+      <ul class="mt-4 space-y-2">
+        <li>Predictable marginal cost</li>
+        <li>No egress ransom</li>
+        <li>GPU capacity you control</li>
+        <li>Data residency and audit</li>
+        <li>Cost reports finance can read</li>
+      </ul>
+    </div>
+  </div>
+</Section>
+<!-- LADDER -->
+<Section bg="warm">
+  <div class="max-w-3xl">
+    <Label color="signal">The ladder</Label>
+    <h2 class="mt-3 text-3xl font-black tracking-tight md:text-4xl">
+      Assess → Pilot → Build → Operate.
+    </h2>
+    <p class="mt-5 text-lg text-slate">
+      Each stage is a fixed scope with exit criteria. No big-bang migration. No
+      religious wars. The next stage starts only if the last one earned it.
+    </p>
+  </div>
+  <div class="mt-12 grid gap-6 md:grid-cols-2 lg:grid-cols-4">
+    {ladder.map(({ data: s }) => (
+      <div class="flex flex-col rounded-2xl border border-rule bg-white p-6">
+        <div class="text-xs font-bold text-electric">{s.step}</div>
+        <div class="mt-2 text-xl font-black">{s.name}</div>
+        <div class="mt-1 text-xs text-slate">{s.duration}</div>
+        <div class="mt-2 text-sm font-semibold text-navy">{s.price}</div>
+        <p class="mt-4 flex-1 text-sm text-slate">{s.summary}</p>
+        <div class="mt-5 text-xs font-semibold text-navy">Exit: {s.exit}</div>
+      </div>
+    ))}
+  </div>
+  <div class="mt-8">
+    <Button href="/engagements">See full engagements</Button>
+  </div>
+</Section>
+<!-- PROOF -->
+<Section bg="navy">
+  <div class="grid gap-12 lg:grid-cols-12">
+    <div class="lg:col-span-5">
+      <Label>Proof</Label>
+      <h2 class="mt-3 text-3xl font-black tracking-tight md:text-4xl">
+        We run what we sell.
+      </h2>
+      <p class="mt-5 text-lg font-medium">
+        You won't be Reardon Systems' first private platform customer. We already are.
+      </p>
+      <p class="mt-5 text-white/75">
+        Reardon Systems operates its own stack — self-hosted platforms,
+        Tailscale-first access, and selective repatriation for workloads that
+        should never have been metered by the hour. The tools we build for
+        ourselves are the same patterns we sell: private by default, GitOps from
+        day one, and software that keeps working when the environment doesn't
+        cooperate.
+      </p>
+    </div>
+    <div class="lg:col-span-7">
+      <div class="rounded-2xl border border-white/10 bg-white/5 p-8">
+        <div class="text-xs font-bold uppercase tracking-wider text-electric">Shipped</div>
+        <p class="mt-4 text-lg font-medium">
+          SpecOps is our inspection product: a diagnostic scanner for the home.
+        </p>
+        <p class="mt-3 text-white/75">
+          Onsite defect capture, reports that generate on the same visit, and an
+          app that works in the crawlspace when the signal drops. Live in private
+          beta with home inspection teams.
+        </p>
+        <p class="mt-4 text-sm text-white/60">
+          SpecOps runs on the same private platform patterns we build for
+          clients. It's not a side project. It's the proof that the stack works
+          under real load, with real users, in an environment where downtime has
+          consequences.
+        </p>
+        <a href="/products/specops"
+           class="mt-6 inline-flex items-center gap-2 text-sm font-semibold text-electric hover:text-white">
+          See SpecOps →
+        </a>
+      </div>
+      <p class="mt-8 text-white/60">
+        Not anti-cloud. Anti-default.
+        <span class="font-semibold text-white">Private where it pays. Public where it bursts.</span>
+      </p>
+    </div>
+  </div>
+</Section>
+<!-- FAQ -->
+<Section>
+  <div class="max-w-3xl">
+    <Label>FAQ</Label>
+    <h2 class="mt-3 text-3xl font-black tracking-tight md:text-4xl">
+      Questions we get asked.
+    </h2>
+  </div>
+  {faqs && (
+    <div class="mt-10 divide-y divide-rule border-y border-rule">
+      {faqs.data.items.map((f) => (
+        <details class="group py-5">
+          <summary class="flex cursor-pointer list-none items-center justify-between">
+            <span class="font-semibold">{f.q}</span>
+            <span class="ml-4 text-electric transition group-open:rotate-45" aria-hidden="true">＋</span>
+          </summary>
+          <p class="mt-3 max-w-3xl text-slate">{f.a}</p>
+        </details>
+      ))}
+    </div>
+  )}
+</Section>
+<!-- FINAL CTA -->
+<Section bg="warm">
+  <div class="grid items-center gap-12 lg:grid-cols-12">
+    <div class="lg:col-span-7">
+      <h2 class="text-3xl font-black tracking-tight md:text-5xl">
+        Show us the bill that hurts.
+      </h2>
+      <p class="mt-5 max-w-xl text-lg text-slate">
+        Mid-market teams with real hyperscaler spend. Not startups guessing. Not
+        enterprises buying another transformation program.
+      </p>
+      <p class="mt-3 text-sm text-slate/80">
+        We reply in plain language. Infra pass-through stays separate. Optional
+        savings-share when incentives should align.
+      </p>
+    </div>
+    <div class="lg:col-span-5">
+      <Button href="/contact">Start with an Assessment</Button>
+    </div>
+  </div>
+</Section>
+</Base>
