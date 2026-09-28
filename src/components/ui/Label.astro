@@ -1,0 +1,10 @@
+---
+interface Props {
+  color?: "electric" | "signal";
+}
+const { color = "electric" } = Astro.props;
+const colorClass = color === "signal" ? "text-signal" : "text-electric";
+---
+<div class={`text-xs font-bold tracking-widest uppercase ${colorClass}`}>
+  <slot />
+</div>

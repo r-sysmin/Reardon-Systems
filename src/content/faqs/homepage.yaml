@@ -1,0 +1,28 @@
+page: homepage
+items:
+  - q: What does Reardon Systems actually do?
+    a: >
+      We help mid-market teams selectively repatriate and hybridize workloads:
+      private platforms with public-cloud pace. We also build custom web and
+      mobile software when the product itself is the job.
+  - q: Is this an anti-cloud pitch?
+    a: >
+      No. It's an anti-default pitch. Public cloud is the right answer for burst,
+      managed services, and genuinely unpredictable demand. It's the wrong answer
+      for steady-state compute you've already committed to paying for.
+  - q: Where do engagements start?
+    a: >
+      With an Assessment. $25K–$50K fixed scope, 2–4 weeks. You get a workload map,
+      a TCO model, and a pilot plan you can defend in the same meeting finance
+      and engineering are both in.
+  - q: Will we lose developer velocity?
+    a: >
+      No. Same Kubernetes, GitOps, IaC, previews, and secrets. The substrate
+      changes, not the workflow. If anything about the developer experience
+      regresses, that's a bug we fix before we call the pilot done.
+  - q: Do you only do repatriation?
+    a: >
+      No. We build custom software when the product is the job. SpecOps is our
+      own product; we build field and ops tools for clients too.
+  - q: How do we start?
+    a: Show us the bill that hurts. We reply in plain language.

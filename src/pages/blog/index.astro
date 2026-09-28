@@ -1,0 +1,110 @@
+---
+import { getCollection } from "astro:content";
+import Base from "../../layouts/Base.astro";
+import Section from "../../components/ui/Section.astro";
+import Label from "../../components/ui/Label.astro";
+const posts = (await getCollection("posts")).sort(
+  (a, b) => b.data.date.valueOf() - a.data.date.valueOf()
+);
+const featured = posts.find((p) => p.data.featured);
+const rest = posts.filter((p) => !p.data.featured);
+const fmt = (d: Date) =>
+  d.toLocaleDateString("en-US", { year: "numeric", month: "short", day: "numeric" });
+---
+<Base
+  title="Blog — Reardon Systems"
+  description="Notes on repatriation, private platforms, and shipping software."
+>
+<!-- HERO -->
+<section class="bg-navy text-white">
+  <div class="mx-auto max-w-8xl px-6 pb-24 pt-24">
+    <p class="text-sm font-bold uppercase tracking-widest text-electric">Blog</p>
+    <h1 class="mt-3 max-w-3xl text-4xl font-black leading-[1.05] tracking-tight md:text-6xl">
+      Notes on repatriation, private platforms, and shipping software.
+    </h1>
+    <p class="mt-6 max-w-2xl text-lg text-white/80 md:text-xl">
+      Field notes from running the stack we sell. No thought leadership. Just
+      what we've learned moving workloads and building tools.
+    </p>
+  </div>
+</section>
+<!-- FEATURED -->
+{featured && (
+  <Section bg="warm">
+    <Label>Featured</Label>
+    <a href={`/blog/${featured.id}`} class="mt-6 block max-w-3xl group">
+      <div class="text-xs font-bold uppercase tracking-widest text-slate">
+        {featured.data.category} · {featured.data.readTime}
+      </div>
+      <h2 class="mt-3 text-3xl font-black tracking-tight group-hover:text-electric md:text-4xl">
+        {featured.data.title}
+      </h2>
+      <p class="mt-4 text-lg text-slate">{featured.data.summary}</p>
+      <div class="mt-4 text-sm font-semibold text-electric">Read →</div>
+    </a>
+  </Section>
+)}
+<!-- ALL POSTS -->
+<Section>
+  <Label>All posts</Label>
+  {rest.length === 0 && !featured ? (
+    <p class="mt-6 text-slate">Nothing published yet. Subscribe below to be notified.</p>
+  ) : (
+    <div class="mt-8 divide-y divide-rule border-y border-rule">
+      {rest.map((post) => (
+        <a href={`/blog/${post.id}`} class="group block py-8">
+          <div class="grid gap-4 md:grid-cols-12 md:items-baseline">
+            <div class="md:col-span-3">
+              <div class="text-xs font-bold uppercase tracking-widest text-slate">
+                {post.data.category}
+              </div>
+              <div class="mt-1 text-xs text-slate/70">
+                {post.data.readTime} · {fmt(post.data.date)}
+              </div>
+            </div>
+            <div class="md:col-span-9">
+              <h3 class="text-xl font-black group-hover:text-electric md:text-2xl">
+                {post.data.title}
+              </h3>
+              <p class="mt-2 text-slate">{post.data.summary}</p>
+            </div>
+          </div>
+        </a>
+      ))}
+    </div>
+  )}
+</Section>
+<!-- SUBSCRIBE -->
+<Section bg="warm">
+  <div class="grid gap-12 lg:grid-cols-12">
+    <div class="lg:col-span-6">
+      <h2 class="text-3xl font-black tracking-tight md:text-4xl">
+        New posts, no schedule.
+      </h2>
+      <p class="mt-4 text-slate">
+        Notes on repatriation, private platforms, and shipping software. Sent
+        when we have something worth saying.
+      </p>
+      <p class="mt-2 text-xs text-slate/70">No spam. Unsubscribe anytime.</p>
+    </div>
+    <div class="lg:col-span-6">
+      {/*
+        TODO: Replace ACTION_URL with your newsletter endpoint
+        (Buttondown, ConvertKit, Beehiiv, etc.).
+      */}
+      <form class="flex flex-col gap-3 sm:flex-row" method="POST" action="ACTION_URL">
+        <label for="email" class="sr-only">Email</label>
+        <input
+          id="email" name="email" type="email" required
+          placeholder="you@company.com"
+          class="w-full rounded-full border border-rule px-5 py-3 text-sm focus:border-electric focus:outline-none focus:ring-2 focus:ring-electric/30"
+        />
+        <button type="submit"
+          class="rounded-full bg-navy px-6 py-3 text-sm font-semibold text-white transition hover:bg-electric">
+          Subscribe
+        </button>
+      </form>
+    </div>
+  </div>
+</Section>
+</Base>

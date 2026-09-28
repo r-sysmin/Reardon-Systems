@@ -1,0 +1,21 @@
+step: "02"
+name: Pilot
+price: "$50K–$150K + pass-through"
+duration: "4–8 weeks"
+summary: >
+  Prove it on one workload. Measured cost and performance on private or hybrid
+  infrastructure, with a parallel run against your baseline.
+includes:
+  - "Target architecture and runbook"
+  - "Parallel run vs baseline"
+  - "Observability, backups, access"
+  - "Measured savings report"
+  - "30-day handoff or Operate retain"
+needs:
+  - "Named pilot workload from the Assessment"
+  - "Access to the target environment"
+  - "A technical owner for the parallel run"
+exit: "Measured cost and performance on one workload, verified against the Assessment model."
+cta: "Plan a Pilot"
+ctaHref: "/contact"
+order: 2

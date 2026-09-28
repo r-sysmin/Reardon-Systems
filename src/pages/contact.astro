@@ -1,0 +1,204 @@
+---
+import { getCollection } from "astro:content";
+import Base from "../layouts/Base.astro";
+import Section from "../components/ui/Section.astro";
+import Label from "../components/ui/Label.astro";
+import Button from "../components/ui/Button.astro";
+const faqs = (await getCollection("faqs")).find((f) => f.data.page === "contact");
+---
+<Base
+  title="Contact — Reardon Systems"
+  description="Tell us the workload that hurts. Bring the bill and the process. We reply in plain language."
+>
+<!-- HERO -->
+<section class="bg-navy text-white">
+  <div class="mx-auto max-w-8xl px-6 pb-24 pt-24">
+    <p class="text-sm font-bold uppercase tracking-widest text-electric">
+      Contact
+    </p>
+    <h1 class="mt-3 max-w-3xl text-4xl font-black leading-[1.05] tracking-tight md:text-6xl">
+      Tell us the workload that hurts.
+    </h1>
+    <p class="mt-6 max-w-2xl text-lg text-white/80 md:text-xl">
+      Bring the bill and the process. We reply in plain language.
+    </p>
+    <div class="mt-8 flex flex-wrap gap-3">
+      <Button href="#form">Send a message</Button>
+      <Button href="/engagements" variant="ghost">See engagements</Button>
+    </div>
+  </div>
+</section>
+<!-- WHAT HAPPENS NEXT -->
+<Section bg="warm">
+  <div class="max-w-3xl">
+    <Label>What happens next</Label>
+    <h2 class="mt-3 text-3xl font-black tracking-tight md:text-4xl">
+      Three steps, no sales choreography.
+    </h2>
+  </div>
+  <div class="mt-12 grid gap-8 md:grid-cols-3">
+    <div>
+      <div class="text-xs font-bold text-electric">01</div>
+      <div class="mt-2 text-lg font-black">You send the brief.</div>
+      <p class="mt-3 text-sm text-slate">
+        Bill, workload, or just the question. Whatever you have is enough to
+        start.
+      </p>
+    </div>
+    <div>
+      <div class="text-xs font-bold text-electric">02</div>
+      <div class="mt-2 text-lg font-black">We reply within one business day.</div>
+      <p class="mt-3 text-sm text-slate">
+        A real reply from a person who'll be on the engagement, not a marketing
+        auto-response.
+      </p>
+    </div>
+    <div>
+      <div class="text-xs font-bold text-electric">03</div>
+      <div class="mt-2 text-lg font-black">We scope an Assessment — or tell you we're not the right fit.</div>
+      <p class="mt-3 text-sm text-slate">
+        If the numbers don't justify the work, we'll say so.
+      </p>
+    </div>
+  </div>
+</Section>
+<!-- FORM -->
+<Section id="form">
+  <div class="grid gap-12 lg:grid-cols-12">
+    <div class="lg:col-span-5">
+      <Label>Send a message</Label>
+      <h2 class="mt-3 text-3xl font-black tracking-tight md:text-4xl">
+        We reply in plain language.
+      </h2>
+      <p class="mt-5 text-slate">
+        Your information stays with us. No autoresponder, no drip sequence.
+      </p>
+    </div>
+    <div class="lg:col-span-7">
+      {/*
+        TODO: Replace ACTION_URL with your form endpoint.
+        Options: Formspree (https://formspree.io/f/YOUR_ID),
+        Basin (https://usebasin.com/f/YOUR_ID), or a Netlify/Vercel API route.
+      */}
+      <form
+        class="grid gap-4"
+        method="POST"
+        action="ACTION_URL"
+      >
+        <div class="grid gap-4 md:grid-cols-2">
+          <div>
+            <label for="name" class="block text-xs font-semibold uppercase tracking-wider text-slate">Name</label>
+            <input
+              id="name" name="name" type="text" required
+              class="mt-2 w-full rounded-lg border border-rule px-4 py-3 text-sm focus:border-electric focus:outline-none focus:ring-2 focus:ring-electric/30"
+            />
+          </div>
+          <div>
+            <label for="email" class="block text-xs font-semibold uppercase tracking-wider text-slate">Work email</label>
+            <input
+              id="email" name="email" type="email" required
+              class="mt-2 w-full rounded-lg border border-rule px-4 py-3 text-sm focus:border-electric focus:outline-none focus:ring-2 focus:ring-electric/30"
+            />
+          </div>
+        </div>
+        <div class="grid gap-4 md:grid-cols-2">
+          <div>
+            <label for="company" class="block text-xs font-semibold uppercase tracking-wider text-slate">Company</label>
+            <input
+              id="company" name="company" type="text"
+              class="mt-2 w-full rounded-lg border border-rule px-4 py-3 text-sm focus:border-electric focus:outline-none focus:ring-2 focus:ring-electric/30"
+            />
+          </div>
+          <div>
+            <label for="phone" class="block text-xs font-semibold uppercase tracking-wider text-slate">Phone (optional)</label>
+            <input
+              id="phone" name="phone" type="tel"
+              class="mt-2 w-full rounded-lg border border-rule px-4 py-3 text-sm focus:border-electric focus:outline-none focus:ring-2 focus:ring-electric/30"
+            />
+          </div>
+        </div>
+        <div>
+          <label for="workload" class="block text-xs font-semibold uppercase tracking-wider text-slate">What's the workload?</label>
+          <input
+            id="workload" name="workload" type="text"
+            placeholder="Tell us what hurts, or paste a link to your bill summary"
+            class="mt-2 w-full rounded-lg border border-rule px-4 py-3 text-sm focus:border-electric focus:outline-none focus:ring-2 focus:ring-electric/30"
+          />
+        </div>
+        <div>
+          <label for="message" class="block text-xs font-semibold uppercase tracking-wider text-slate">Message</label>
+          <textarea
+            id="message" name="message" rows="6"
+            class="mt-2 w-full rounded-lg border border-rule px-4 py-3 text-sm focus:border-electric focus:outline-none focus:ring-2 focus:ring-electric/30"
+          ></textarea>
+        </div>
+        <button
+          type="submit"
+          class="mt-2 inline-flex w-fit items-center gap-2 rounded-full bg-navy px-6 py-3 text-sm font-semibold text-white transition hover:bg-electric"
+        >
+          Send a message
+        </button>
+        <p class="mt-1 text-xs text-slate/70">
+          We reply in plain language. Your information stays with us.
+        </p>
+      </form>
+    </div>
+  </div>
+</Section>
+<!-- DIRECT -->
+<Section bg="warm">
+  <div class="grid gap-12 lg:grid-cols-12">
+    <div class="lg:col-span-5">
+      <Label>Direct</Label>
+      <h2 class="mt-3 text-3xl font-black tracking-tight md:text-4xl">
+        Or skip the form.
+      </h2>
+    </div>
+    <div class="lg:col-span-7">
+      <ul class="space-y-6 text-slate">
+        <li>
+          <div class="text-sm font-bold uppercase tracking-wider text-slate">General & new business</div>
+          <a href="mailto:hello@reardonsystems.com" class="mt-1 block font-semibold text-navy hover:text-electric">
+            hello@reardonsystems.com
+          </a>
+        </li>
+        <li>
+          <div class="text-sm font-bold uppercase tracking-wider text-slate">SpecOps & inspection software</div>
+          <a href="mailto:specops@reardonsystems.com" class="mt-1 block font-semibold text-navy hover:text-electric">
+            specops@reardonsystems.com
+          </a>
+        </li>
+        <li>
+          <div class="text-sm font-bold uppercase tracking-wider text-slate">Existing clients</div>
+          <p class="mt-1">
+            Your named contact has a direct line. For anything urgent, the
+            Operate response window applies.
+          </p>
+        </li>
+      </ul>
+    </div>
+  </div>
+</Section>
+<!-- FAQ -->
+<Section>
+  <div class="max-w-3xl">
+    <Label>FAQ</Label>
+    <h2 class="mt-3 text-3xl font-black tracking-tight md:text-4xl">
+      Before you write.
+    </h2>
+  </div>
+  {faqs && (
+    <div class="mt-10 divide-y divide-rule border-y border-rule">
+      {faqs.data.items.map((f) => (
+        <details class="group py-5">
+          <summary class="flex cursor-pointer list-none items-center justify-between">
+            <span class="font-semibold">{f.q}</span>
+            <span class="ml-4 text-electric transition group-open:rotate-45" aria-hidden="true">＋</span>
+          </summary>
+          <p class="mt-3 max-w-3xl text-slate">{f.a}</p>
+        </details>
+      ))}
+    </div>
+  )}
+</Section>
+</Base>

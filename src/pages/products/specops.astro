@@ -1,0 +1,270 @@
+---
+import { getCollection } from "astro:content";
+import Base from "../../layouts/Base.astro";
+import Section from "../../components/ui/Section.astro";
+import Label from "../../components/ui/Label.astro";
+import Button from "../../components/ui/Button.astro";
+const faqs = (await getCollection("faqs")).find((f) => f.data.page === "specops");
+---
+<Base
+  nav="specops"
+  title="SpecOps — Finished reports, same visit."
+  description="Onsite defect capture, reports that write themselves, and an app that works in the crawlspace. Built for home inspection teams."
+>
+<!-- HERO -->
+<section class="bg-navy text-white">
+  <div class="mx-auto max-w-8xl px-6 pb-24 pt-24">
+    <div class="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/5 px-3 py-1 text-xs font-medium tracking-wide text-white/80">
+      <span class="h-1.5 w-1.5 rounded-full bg-signal"></span>
+      Private beta · Cohort 1 at capacity
+    </div>
+    <h1 class="mt-6 max-w-3xl text-4xl font-black leading-[1.05] tracking-tight md:text-6xl">
+      Finished reports, same visit.
+    </h1>
+    <p class="mt-6 max-w-2xl text-lg text-white/80 md:text-xl">
+      Capture defects on site, generate the client-ready report before you leave
+      the driveway, and keep working when the signal drops.
+    </p>
+    <p class="mt-4 text-sm text-white/60">
+      Built for home inspection teams. Live in private beta.
+    </p>
+    <div class="mt-8 flex flex-wrap gap-3">
+      <Button href="#access">Join the Cohort 2 waitlist</Button>
+      <Button href="#what" variant="ghost">See what it does</Button>
+    </div>
+    <div class="mt-8 flex flex-wrap items-center gap-x-6 gap-y-2 text-xs text-white/60">
+      <span>✓ Offline-first</span>
+      <span>✓ Your templates</span>
+      <span>✓ No retyping</span>
+    </div>
+  </div>
+</section>
+<!-- PROBLEM -->
+<Section bg="warm">
+  <div class="grid gap-12 lg:grid-cols-12">
+    <div class="lg:col-span-5">
+      <Label color="signal">The problem</Label>
+      <h2 class="mt-3 text-3xl font-black tracking-tight md:text-4xl">
+        You already know the drill.
+      </h2>
+    </div>
+    <div class="text-lg leading-relaxed text-slate lg:col-span-7">
+      <p>
+        Home inspection is high-liability and time-pressured. Findings happen on
+        site, but the report happens at the kitchen table at 9pm. Most teams are
+        stuck between software that hasn't changed since the 90s and generic form
+        builders that were never meant for field work.
+      </p>
+      <p class="mt-4 font-medium text-navy">
+        Meanwhile the client is waiting, the agent is texting, and the second
+        program you have to retype everything into is still open on the laptop.
+      </p>
+    </div>
+  </div>
+</Section>
+<!-- WHAT IT DOES -->
+<Section id="what">
+  <div class="max-w-3xl">
+    <Label>What it does</Label>
+    <h2 class="mt-3 text-3xl font-black tracking-tight md:text-4xl">
+      Built for the inspection, not for a sales demo.
+    </h2>
+  </div>
+  <div class="mt-12 grid gap-8 md:grid-cols-2">
+    <div class="rounded-2xl border border-rule bg-white p-8">
+      <h3 class="text-lg font-black">Onsite defect capture</h3>
+      <p class="mt-3 text-slate">
+        Log findings, photos, and notes room by room while you are still standing
+        in front of the problem. No shorthand. No "I'll remember this one." The
+        report builds as you walk.
+      </p>
+    </div>
+    <div class="rounded-2xl border border-rule bg-white p-8">
+      <h3 class="text-lg font-black">Reports that write themselves</h3>
+      <p class="mt-3 text-slate">
+        Findings become a finished, client-ready report without retyping
+        anything into a second program. Formatting, terminology, and your firm's
+        language applied automatically.
+      </p>
+    </div>
+    <div class="rounded-2xl border border-rule bg-white p-8">
+      <h3 class="text-lg font-black">Works in the crawlspace</h3>
+      <p class="mt-3 text-slate">
+        Offline-first by design. Inspections keep running with no signal and sync
+        the moment you are back. Attics, basements, rural properties, dead zones
+        — the app doesn't care.
+      </p>
+    </div>
+    <div class="rounded-2xl border border-rule bg-white p-8">
+      <h3 class="text-lg font-black">Your checklists, your language</h3>
+      <p class="mt-3 text-slate">
+        Built around the templates and terminology your firm already uses, not a
+        generic form builder. Your report style, your defect language, your
+        standards of practice. We set it up with you during onboarding.
+      </p>
+    </div>
+  </div>
+</Section>
+<!-- WHY IT EXISTS -->
+<Section bg="navy">
+  <div class="max-w-3xl">
+    <Label>Why it exists</Label>
+    <h2 class="mt-3 text-3xl font-black tracking-tight md:text-4xl">
+      Software for the workflows no one else builds for.
+    </h2>
+    <p class="mt-5 text-lg text-white/80">
+      The big inspection software vendors have no reason to rebuild for small
+      firms. The form builders have no reason to understand a crawlspace. So we
+      built it.
+    </p>
+    <p class="mt-4 text-white/70">
+      SpecOps is made by Reardon Systems, who run their own private
+      infrastructure and build tools that survive real work. Same approach,
+      different vertical.
+    </p>
+  </div>
+</Section>
+<!-- ACCESS -->
+<Section id="access" bg="warm">
+  <div class="grid gap-12 lg:grid-cols-12">
+    <div class="lg:col-span-5">
+      <Label color="signal">Access</Label>
+      <h2 class="mt-3 text-3xl font-black tracking-tight md:text-4xl">
+        Cohort 1 is full.
+      </h2>
+      <p class="mt-5 text-slate">
+        We are at capacity with our initial beta group so every active inspector
+        on the platform gets dedicated engineering support. Join the waitlist and
+        we will let you know as soon as spots open for the next cohort.
+      </p>
+      <p class="mt-4 text-slate">
+        We onboard in small batches, set up your templates with you, and stay on
+        after you go live.
+      </p>
+    </div>
+    <div class="lg:col-span-7">
+      <div class="rounded-2xl border border-rule bg-white p-8">
+        <h3 class="text-lg font-black">Join the Cohort 2 waitlist</h3>
+        {/*
+          TODO: Replace ACTION_URL with your form endpoint.
+          Note: file uploads require either a form service that accepts
+          multipart (Basin, Formspree with files enabled) or a server adapter.
+        */}
+        <form
+          class="mt-6 grid gap-4"
+          method="POST"
+          action="ACTION_URL"
+          enctype="multipart/form-data"
+        >
+          <div>
+            <label for="name" class="block text-xs font-semibold uppercase tracking-wider text-slate">Full name</label>
+            <input id="name" name="name" type="text" required
+              class="mt-2 w-full rounded-lg border border-rule px-4 py-3 text-sm focus:border-electric focus:outline-none focus:ring-2 focus:ring-electric/30" />
+          </div>
+          <div>
+            <label for="email" class="block text-xs font-semibold uppercase tracking-wider text-slate">Work email</label>
+            <input id="email" name="email" type="email" required
+              class="mt-2 w-full rounded-lg border border-rule px-4 py-3 text-sm focus:border-electric focus:outline-none focus:ring-2 focus:ring-electric/30" />
+          </div>
+          <div>
+            <label for="company" class="block text-xs font-semibold uppercase tracking-wider text-slate">Company name</label>
+            <input id="company" name="company" type="text" required
+              class="mt-2 w-full rounded-lg border border-rule px-4 py-3 text-sm focus:border-electric focus:outline-none focus:ring-2 focus:ring-electric/30" />
+          </div>
+          <div>
+            <label for="current_software" class="block text-xs font-semibold uppercase tracking-wider text-slate">Current software</label>
+            <select id="current_software" name="current_software"
+              class="mt-2 w-full rounded-lg border border-rule bg-white px-4 py-3 text-sm focus:border-electric focus:outline-none focus:ring-2 focus:ring-electric/30">
+              <option value="">Select one</option>
+              <option>HomeGauge</option>
+              <option>Spectora</option>
+              <option>InspectIT</option>
+              <option>3D Inspection</option>
+              <option>Palm-Tech</option>
+              <option>Generic form builder</option>
+              <option>Paper / Word / PDF</option>
+              <option>Other</option>
+            </select>
+          </div>
+          <div>
+            <label for="migration_notes" class="block text-xs font-semibold uppercase tracking-wider text-slate">
+              Migration notes
+            </label>
+            <p class="mt-1 text-xs text-slate/80">
+              Optional. We will need help moving over report templates, checklists, or historical inspection data.
+            </p>
+            <textarea id="migration_notes" name="migration_notes" rows="3"
+              class="mt-2 w-full rounded-lg border border-rule px-4 py-3 text-sm focus:border-electric focus:outline-none focus:ring-2 focus:ring-electric/30"></textarea>
+          </div>
+          <div>
+            <label for="template_file" class="block text-xs font-semibold uppercase tracking-wider text-slate">
+              Template or checklist (optional)
+            </label>
+            <input id="template_file" name="template_file" type="file"
+              class="mt-2 block w-full text-sm text-slate file:mr-4 file:rounded-full file:border-0 file:bg-navy file:px-4 file:py-2 file:text-sm file:font-semibold file:text-white hover:file:bg-electric" />
+          </div>
+          <div>
+            <label for="report_file" class="block text-xs font-semibold uppercase tracking-wider text-slate">
+              Finished report sample (optional)
+            </label>
+            <input id="report_file" name="report_file" type="file"
+              class="mt-2 block w-full text-sm text-slate file:mr-4 file:rounded-full file:border-0 file:bg-navy file:px-4 file:py-2 file:text-sm file:font-semibold file:text-white hover:file:bg-electric" />
+          </div>
+          <p class="text-xs text-slate/70">
+            Not near your desk? Skip it. You can send these later when we reach out about your cohort spot.
+          </p>
+          <button type="submit"
+            class="mt-2 inline-flex w-fit items-center gap-2 rounded-full bg-navy px-6 py-3 text-sm font-semibold text-white transition hover:bg-electric">
+            Request a spot
+          </button>
+          <p class="text-xs text-slate/70">
+            Files stay private. We use them only to prepare your account.
+          </p>
+        </form>
+      </div>
+    </div>
+  </div>
+</Section>
+<!-- FAQ -->
+<Section id="faq">
+  <div class="max-w-3xl">
+    <Label>FAQ</Label>
+    <h2 class="mt-3 text-3xl font-black tracking-tight md:text-4xl">
+      Questions we get asked.
+    </h2>
+  </div>
+  {faqs && (
+    <div class="mt-10 divide-y divide-rule border-y border-rule">
+      {faqs.data.items.map((f) => (
+        <details class="group py-5">
+          <summary class="flex cursor-pointer list-none items-center justify-between">
+            <span class="font-semibold">{f.q}</span>
+            <span class="ml-4 text-electric transition group-open:rotate-45" aria-hidden="true">＋</span>
+          </summary>
+          <p class="mt-3 max-w-3xl text-slate">{f.a}</p>
+        </details>
+      ))}
+    </div>
+  )}
+</Section>
+<!-- FINAL CTA -->
+<Section bg="navy">
+  <div class="max-w-3xl">
+    <h2 class="text-3xl font-black tracking-tight md:text-5xl">
+      Finished reports, same visit.
+    </h2>
+    <p class="mt-5 text-lg text-white/80">
+      Capture on site. Report on site. Sync when you have signal.
+    </p>
+    <p class="mt-3 text-white/70">
+      Cohort 1 is full. Join the waitlist for Cohort 2.
+    </p>
+    <div class="mt-8">
+      <Button href="#access">Join the waitlist</Button>
+    </div>
+    <p class="mt-4 text-sm text-white/50">
+      Small batches. Real onboarding. Dedicated support.
+    </p>
+  </div>
+</Section>
+</Base>

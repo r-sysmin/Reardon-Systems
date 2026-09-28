@@ -1,0 +1,9 @@
+step: "03"
+name: Platform Build
+duration: "3–9 months"
+price: "Quoted after Assessment"
+summary: >
+  Landing zone, GitOps, previews, secrets, environments, observability, DR.
+  Built on infrastructure you control, scoped to your blast radius.
+exit: Production workloads on private/hybrid, SLOs met
+order: 3

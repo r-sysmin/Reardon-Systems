@@ -1,0 +1,21 @@
+step: "04"
+name: Operate
+price: "From $8K/month"
+duration: "Ongoing"
+summary: >
+  We run the steady-state private stack. Your team keeps shipping product.
+  Optional savings-share when incentives should align.
+includes:
+  - "Patching, capacity, backups"
+  - "Named contact + response window"
+  - "Cost reports"
+  - "Quarterly expansion review"
+  - "Optional savings-share term"
+needs:
+  - "Production private/hybrid platform in place"
+  - "Agreed response window and escalation path"
+  - "Access for ops tooling"
+exit: "Renewal and expansion — we keep the engagement if the cost reports keep showing what we said they'd show."
+cta: "Talk about Operate"
+ctaHref: "/contact"
+order: 4

@@ -1,0 +1,22 @@
+---
+interface Props {
+  href: string;
+  variant?: "primary" | "navy" | "ghost";
+}
+const { href, variant = "primary" } = Astro.props;
+const base =
+  "inline-flex items-center gap-2 rounded-full px-5 py-3 text-sm font-semibold transition";
+const variants = {
+  primary: "bg-electric text-white hover:bg-white hover:text-navy",
+  navy: "bg-navy text-white hover:bg-electric",
+  ghost: "border border-white/25 text-white hover:bg-white/10",
+};
+const cls = `${base} ${variants[variant]}`;
+---
+<a href={href} class={cls}>
+  <slot />
+  <svg width="16" height="16" viewBox="0 0 24 24" fill="none"
+       stroke="currentColor" stroke-width="2.5" aria-hidden="true">
+    <path d="M5 12h14M13 6l6 6-6 6" />
+  </svg>
+</a>

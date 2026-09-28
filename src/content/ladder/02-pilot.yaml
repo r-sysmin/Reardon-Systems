@@ -1,0 +1,9 @@
+step: "02"
+name: Pilot
+duration: "4–8 weeks"
+price: "$50K–$150K + pass-through"
+summary: >
+  One real workload. Parallel run against baseline. Measured cost and performance
+  on private or hybrid infrastructure. If the numbers don't hold, you stop.
+exit: Measured TCO win on one workload
+order: 2
