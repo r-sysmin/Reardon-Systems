@@ -11,7 +11,7 @@ concurrency:
 
 jobs:
   build-and-deploy:
-    runs-on: ccmm-reardon
+    runs-on: [self-hosted, reardon]
     timeout-minutes: 15
 
     steps:
