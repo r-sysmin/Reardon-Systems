@@ -54,8 +54,10 @@ loopback backend `127.0.0.1:8222`). Stack: `/opt/hosting/sites/vaultwarden`.
 The `bw` CLI is installed on the workstation and configured against it:
 
 ```bash
-bw login --raw            # once; prints the session key
-export BW_SESSION=…       # or: bw unlock --raw
+# Log in and capture the session key in one step (do NOT paste a literal placeholder):
+export BW_SESSION="$(bw login --raw)"   # once
+# later unlocks: export BW_SESSION="$(bw unlock --raw)"
+
 scripts/bw-import-approle.sh   # seed the AppRole items
 pnpm vault:pull                # now works from the vault, no local creds file
 ```
