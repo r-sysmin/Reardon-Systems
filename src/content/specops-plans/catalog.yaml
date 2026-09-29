@@ -1,0 +1,173 @@
+# SpecOps Stripe product catalog
+#
+# Stripe Product names (sandbox): Pro · Pro+ · Business · Enterprise
+#   Tier 1 Pro       ($99/mo · $990/yr)
+#   Tier 2 Pro+      ($199/mo · $1,990/yr)
+#   Tier 3 Business  ($399/mo · $3,990/yr)
+#   Tier 4 Enterprise — Pricing Table custom CTA → /contact (no price)
+# Stripe Product description hard limit: 299 characters.
+# Statement descriptor hard limit: 22 characters.
+
+- id: pro
+  order: 1
+  tier: 1
+  name: Pro
+  stripe:
+    productId: prod_VLUHrhtTr1T9j5
+    productName: Pro
+    description: >-
+      All-in-one for solo inspectors: offline field app, unlimited reports,
+      scheduling, CRM, payments, plus website with domain, hosting, and SSL.
+      One bill. No stack tax. No per-report fees.
+    statementDescriptor: Spec Ops T1 Pro
+  currency: usd
+  prices:
+    month:
+      amount: 9900
+      display: "$99/mo"
+      priceId: price_1UKnJ8FMdvDS1y792Z9wbh22
+    year:
+      amount: 99000
+      display: "$990/yr"
+      priceId: price_1UKnJ9FMdvDS1y79Cc055IFD
+  seats: "1 inspector"
+  target: "Single-operator firms that need everything without team management."
+  trialDays: 30
+  checkout: payment_element
+  includes:
+    - 1 inspector seat
+    - Unlimited inspections and reports
+    - Mobile + desktop app with full offline mode and auto-sync
+    - Full reporting suite — PDF and interactive client portal
+    - Digital pre-inspection agreements with e-signatures
+    - Scheduling and calendar
+    - Client and agent CRM
+    - Automated email and SMS notifications
+    - Integrated payment collection (Stripe, PayPal, Square)
+    - Professional website included — template site, domain, hosting, SSL, maintenance
+    - Online booking widget
+    - Email support (24-hour response)
+    - 30-day free trial
+  excludesNotes: []
+
+- id: pro-plus
+  order: 2
+  tier: 2
+  name: Pro+
+  stripe:
+    productId: prod_VLUHrSXJvvBch4
+    productName: Pro+
+    description: >-
+      For growing solo and small firms (up to 3 seats). Everything in Tier 1
+      Pro, plus AI reports and photo analysis, automation, QuickBooks, custom
+      branding, agent referral tracking, priority support, and competitor
+      template migration.
+    statementDescriptor: Spec Ops T2 ProP
+  currency: usd
+  prices:
+    month:
+      amount: 19900
+      display: "$199/mo"
+      priceId: price_1UKnJCFMdvDS1y799C4KYy7W
+    year:
+      amount: 199000
+      display: "$1,990/yr"
+      priceId: price_1UKnJDFMdvDS1y79hGigQ4B5
+  seats: "Up to 3 inspector seats"
+  target: "Growing solo operators or 2–3 inspector firms that need advanced automation."
+  trialDays: 30
+  checkout: payment_element
+  includes:
+    - Everything in Pro
+    - Up to 3 inspector seats
+    - AI report summaries and voice-first report writing
+    - AI photo analysis (auto-identifies defects)
+    - Advanced automation workflows (email sequences, inspection logic)
+    - QuickBooks Online integration
+    - Custom branding on reports and client portal
+    - Agent referral tracking dashboard
+    - Priority support (4-hour response)
+    - Template migration assistance from Spectora, HomeGauge, HIP, or Palm-Tech
+    - Larger website allowance vs Pro
+    - 30-day free trial
+  excludesNotes: []
+
+- id: business
+  order: 3
+  tier: 3
+  name: Business
+  stripe:
+    productId: prod_VLUHJV9gVtj1gC
+    productName: Business
+    description: >-
+      For multi-inspector firms (4–8 seats). Everything in Pro+, plus
+      white-label, payroll splits, financial reporting, API access, onboarding,
+      and priority async support. One platform for field, back office, and online
+      presence.
+    statementDescriptor: Spec Ops T3 Biz
+  currency: usd
+  prices:
+    month:
+      amount: 39900
+      display: "$399/mo"
+      priceId: price_1UKnJFFMdvDS1y79VAJmbsSL
+    year:
+      amount: 399000
+      display: "$3,990/yr"
+      priceId: price_1UKnJHFMdvDS1y79TYhi7VaZ
+  seats: "Up to 8 inspector seats"
+  target: "Established multi-inspector firms (4–8 inspectors)."
+  trialDays: 30
+  checkout: payment_element
+  includes:
+    - Everything in Pro+
+    - Up to 8 inspector seats
+    - White-label branding (logo, colors, custom domain for client portal)
+    - Payroll periods and pay splits for multi-inspector organizations
+    - Advanced financial reporting (per-inspector revenue, commission tracking)
+    - API access for custom integrations
+    - Onboarding assistance
+    - Priority async / email support (phone when staffed)
+    - 30-day free trial
+  excludesNotes:
+    - "Position support as async/priority email until phone coverage exists."
+
+- id: enterprise
+  order: 4
+  tier: 4
+  name: Enterprise
+  stripe:
+    productId: prod_VLUHSK1rOXpKi5
+    productName: Enterprise
+    description: >-
+      For large firms and franchises (9+ inspectors). Everything in Business,
+      plus unlimited seats, multi-location, custom integrations, 99.9% SLA,
+      training, and dedicated support. Custom pricing — contact sales.
+    statementDescriptor: Spec Ops T4 Ent
+  currency: usd
+  prices:
+    month: null
+    year: null
+  seats: "Unlimited inspector seats"
+  target: "Large firms (9+ inspectors) and franchise operations."
+  trialDays: null
+  checkout: contact
+  ctaHref: /contact
+  ctaLabel: Contact sales
+  displayHint: "Custom"
+  pricingTable:
+    # Stripe Pricing Table: "Add product with custom call-to-action" (no price)
+    customCta: true
+    buttonLabel: Contact sales
+    url: /contact
+  includes:
+    - Everything in Business
+    - Unlimited inspector seats
+    - Multi-location support
+    - Custom feature development (as available)
+    - SLA-backed uptime guarantee (99.9%)
+    - On-site or virtual training for your team
+    - Custom integrations and data migration
+    - Dedicated account management and priority support
+  excludesNotes:
+    - "No self-serve price on the Pricing Table — custom CTA to /contact only."

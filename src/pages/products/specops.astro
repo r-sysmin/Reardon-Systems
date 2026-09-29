@@ -4,7 +4,10 @@ import Base from "../../layouts/Base.astro";
 import Section from "../../components/ui/Section.astro";
 import Label from "../../components/ui/Label.astro";
 import Button from "../../components/ui/Button.astro";
+import SpecOpsPricing from "../../components/SpecOpsPricing.astro";
+
 const faqs = (await getCollection("faqs")).find((f) => f.data.page === "specops");
+const beta = import.meta.env.PUBLIC_SPECOPS_BETA !== "false";
 ---
 <Base
   nav="specops"
@@ -30,7 +33,7 @@ const faqs = (await getCollection("faqs")).find((f) => f.data.page === "specops"
     </p>
     <div class="mt-8 flex flex-wrap gap-3">
       <Button href="#access">Join the Cohort 2 waitlist</Button>
-      <Button href="#what" variant="ghost">See what it does</Button>
+      <Button href="#pricing" variant="ghost">See pricing</Button>
     </div>
     <div class="mt-8 flex flex-wrap items-center gap-x-6 gap-y-2 text-xs text-white/60">
       <span>✓ Offline-first</span>
@@ -124,6 +127,8 @@ const faqs = (await getCollection("faqs")).find((f) => f.data.page === "specops"
     </p>
   </div>
 </Section>
+<!-- PRICING -->
+<SpecOpsPricing beta={beta} />
 <!-- ACCESS -->
 <Section id="access" bg="warm">
   <div class="grid gap-12 lg:grid-cols-12">
