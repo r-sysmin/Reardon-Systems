@@ -1,0 +1,216 @@
+---
+export const prerender = false;
+
+import Base from "../../../layouts/Base.astro";
+import {
+  getPayableSpecOpsPlan,
+  getSpecOpsPlans,
+  parseBillingInterval,
+  resolvePlanPrice,
+} from "../../../lib/specops-catalog";
+
+const planId = Astro.url.searchParams.get("plan") ?? "pro";
+const interval = parseBillingInterval(Astro.url.searchParams.get("interval"));
+const plan = getPayableSpecOpsPlan(planId);
+const price = plan ? resolvePlanPrice(plan, interval) : null;
+const publishableKey = import.meta.env.PUBLIC_STRIPE_PUBLISHABLE_KEY ?? "";
+const success =
+  Astro.url.searchParams.get("redirect_status") === "succeeded" ||
+  Astro.url.searchParams.get("checkout") === "success";
+
+const payablePlans = getSpecOpsPlans().filter((p) => p.checkout !== "contact");
+
+function checkoutHref(id: string, billing: "month" | "year") {
+  return `/products/specops/checkout?plan=${id}&interval=${billing}`;
+}
+---
+<Base
+  title={plan ? `Checkout — ${plan.stripe.productName}` : "Checkout — Spec Ops"}
+  description="Pay for Spec Ops with Stripe Payment Element."
+  nav="specops"
+>
+  <section class="bg-navy text-white">
+    <div class="mx-auto max-w-3xl px-6 py-16">
+      <p class="text-sm font-bold uppercase tracking-widest text-electric">Checkout</p>
+      {plan && price ? (
+        <>
+          <h1 class="mt-3 text-3xl font-black tracking-tight md:text-4xl">
+            {plan.stripe.productName}
+          </h1>
+          <p class="mt-3 text-lg text-white/80">
+            {price.display}
+            <span class="text-white/50"> · {interval === "month" ? "monthly" : "annual"}</span>
+          </p>
+          <p class="mt-4 max-w-2xl text-sm text-white/70">{plan.stripe.description}</p>
+        </>
+      ) : (
+        <h1 class="mt-3 text-3xl font-black">Unknown plan</h1>
+      )}
+    </div>
+  </section>
+
+  <section class="mx-auto max-w-3xl px-6 py-16">
+    {success ? (
+      <div class="rounded-2xl border border-rule bg-warm p-8">
+        <h2 class="text-2xl font-black text-navy">Payment received</h2>
+        <p class="mt-3 text-slate">
+          We confirmed your payment. You’ll get access details by email shortly.
+        </p>
+        <a href="/products/specops" class="mt-6 inline-block font-semibold text-electric hover:text-navy">
+          Back to Spec Ops →
+        </a>
+      </div>
+    ) : !plan || !price ? (
+      <div class="space-y-4">
+        <p class="text-slate">Pick a payable plan:</p>
+        <ul class="space-y-2">
+          {payablePlans.map((p) => (
+            <li>
+              <a
+                class="font-semibold text-electric hover:text-navy"
+                href={checkoutHref(p.id, "year")}
+              >
+                {p.stripe.productName} — {p.prices.year?.display} / {p.prices.month?.display}
+              </a>
+            </li>
+          ))}
+        </ul>
+      </div>
+    ) : !publishableKey ? (
+      <div class="rounded-2xl border border-signal/40 bg-warm p-8 text-slate">
+        <p class="font-semibold text-navy">Stripe publishable key missing</p>
+        <p class="mt-2 text-sm">
+          Set <code class="text-navy">PUBLIC_STRIPE_PUBLISHABLE_KEY</code> in
+          <code class="text-navy"> .env</code> from the Stripe Dashboard, then restart the server.
+        </p>
+      </div>
+    ) : (
+      <div>
+        <div class="mb-4 flex flex-wrap gap-3 text-sm">
+          {payablePlans.map((p) => (
+            <a
+              href={checkoutHref(p.id, interval)}
+              class:list={[
+                "rounded-full px-4 py-2 font-semibold transition",
+                p.id === plan.id
+                  ? "bg-navy text-white"
+                  : "border border-rule text-slate hover:border-electric hover:text-navy",
+              ]}
+            >
+              {p.name}
+            </a>
+          ))}
+        </div>
+        <div class="mb-6 flex flex-wrap gap-2 text-sm">
+          <a
+            href={checkoutHref(plan.id, "month")}
+            class:list={[
+              "rounded-full px-4 py-2 font-semibold transition",
+              interval === "month"
+                ? "bg-electric text-white"
+                : "border border-rule text-slate hover:border-electric hover:text-navy",
+            ]}
+          >
+            Monthly · {plan.prices.month?.display}
+          </a>
+          <a
+            href={checkoutHref(plan.id, "year")}
+            class:list={[
+              "rounded-full px-4 py-2 font-semibold transition",
+              interval === "year"
+                ? "bg-electric text-white"
+                : "border border-rule text-slate hover:border-electric hover:text-navy",
+            ]}
+          >
+            Annual · {plan.prices.year?.display}
+          </a>
+        </div>
+        <form id="payment-form" class="rounded-2xl border border-rule p-6 md:p-8">
+          <div id="payment-element"><!-- Payment Element mounts here --></div>
+          <button
+            id="submit"
+            type="submit"
+            class="mt-6 inline-flex w-full items-center justify-center rounded-full bg-electric px-6 py-3 text-sm font-semibold text-white transition hover:bg-navy disabled:opacity-50 md:w-auto"
+          >
+            <span id="button-text">Pay {price.display}</span>
+            <span id="spinner" class="hidden" aria-hidden="true">Processing…</span>
+          </button>
+          <p id="payment-message" class="mt-4 hidden text-sm text-signal" role="alert"></p>
+        </form>
+      </div>
+    )}
+  </section>
+</Base>
+
+{plan && price && publishableKey && !success && (
+  <>
+    <script is:inline src="https://js.stripe.com/v3/"></script>
+    <script
+      define:vars={{
+        planId: plan.id,
+        interval,
+        publishableKey,
+        returnUrl: new URL(
+          `/products/specops/checkout?plan=${plan.id}&interval=${interval}&checkout=success`,
+          Astro.url,
+        ).toString(),
+      }}
+    >
+      async function boot() {
+        const form = document.getElementById("payment-form");
+        const messageEl = document.getElementById("payment-message");
+        const submitBtn = document.getElementById("submit");
+        const buttonText = document.getElementById("button-text");
+        const spinner = document.getElementById("spinner");
+        if (!form || !messageEl || !submitBtn || !buttonText || !spinner) return;
+
+        const showMessage = (text) => {
+          messageEl.textContent = text;
+          messageEl.classList.remove("hidden");
+        };
+
+        const setLoading = (isLoading) => {
+          submitBtn.disabled = isLoading;
+          buttonText.classList.toggle("hidden", isLoading);
+          spinner.classList.toggle("hidden", !isLoading);
+        };
+
+        const intentRes = await fetch("/api/create-payment-intent", {
+          method: "POST",
+          headers: { "content-type": "application/json" },
+          body: JSON.stringify({ planId, interval }),
+        });
+        const intentData = await intentRes.json();
+        if (!intentRes.ok) {
+          showMessage(intentData.error || "Could not start payment.");
+          return;
+        }
+
+        const stripe = Stripe(publishableKey);
+        const elements = stripe.elements({
+          clientSecret: intentData.clientSecret,
+          appearance: { theme: "stripe" },
+        });
+        const paymentElement = elements.create("payment", {
+          layout: "accordion",
+        });
+        paymentElement.mount("#payment-element");
+
+        form.addEventListener("submit", async (event) => {
+          event.preventDefault();
+          setLoading(true);
+          const { error } = await stripe.confirmPayment({
+            elements,
+            confirmParams: { return_url: returnUrl },
+          });
+          if (error) {
+            showMessage(error.message || "Payment failed.");
+            setLoading(false);
+          }
+        });
+      }
+
+      boot();
+    </script>
+  </>
+)}

@@ -97,6 +97,57 @@ The contact form and SpecOps waitlist form have placeholder `action="ACTION_URL"
 attributes. Before launch, replace with a form service (Formspree, Basin, Netlify
 Forms) or an Astro adapter + API route.
 
+## Spec Ops Stripe (Pricing Table + Payment Element)
+
+Catalog copy: [`docs/specops-stripe-catalog.md`](docs/specops-stripe-catalog.md)  
+Machine-readable: [`src/content/specops-plans/catalog.yaml`](src/content/specops-plans/catalog.yaml)
+
+### 1. Sync Products / Prices / marketing features (API)
+
+```bash
+# requires authenticated Stripe CLI (`stripe login`) — test/sandbox
+pnpm stripe:sync-specops
+```
+
+Idempotent. Writes IDs to `.data/stripe-catalog.json` (gitignored).
+
+### 2. Create a Stripe Pricing Table (Dashboard — no public API)
+
+1. Open [Product catalog → Pricing tables](https://dashboard.stripe.com/test/pricing-tables) (test mode).
+2. **+ Create pricing table**.
+3. Add **Pro**, **Pro+**, **Business** (month + year prices). Add **Enterprise** with **custom call-to-action** (Contact sales → `/contact`) — no price on that column.
+4. Display settings: highlight Pro+ if you want; marketing features come from each Product.
+5. Payment settings: success URL → `/products/specops?checkout=success`, cancel → `/products/specops#pricing`.
+6. **Copy code** → grab `pricing-table-id="prctbl_…"`.
+
+### 3. Env (via HashiCorp Vault)
+
+Secrets live in Vault — see [`docs/secrets-vault.md`](docs/secrets-vault.md). Do not commit `.env`.
+
+```bash
+export VAULT_ADDR=…          # or: pnpm vault:bootstrap-dev (local smoke only)
+pnpm vault:pull              # writes .env from apps/reardon-systems/<env>/…
+# first-time seed from a local .env: pnpm vault:push
+```
+
+[`.env.example`](.env.example) documents:
+
+- `STRIPE_SECRET_KEY` / `STRIPE_SECRET_KEY_NEXT` (active + rotation warmup)
+- `PUBLIC_STRIPE_PUBLISHABLE_KEY` / `PUBLIC_STRIPE_PRICING_TABLE_ID`
+- `STRIPE_WEBHOOK_SECRET`
+- Keep `PUBLIC_SPECOPS_BETA=true` (default): Pricing Table visible, Buy → waitlist. Set `false` only when self-serve Checkout should go live.
+
+### 4. Local smoke
+
+```bash
+pnpm dev
+stripe listen --forward-to localhost:4321/api/stripe-webhook
+```
+
+Webhook records `checkout.session.completed` (Pricing Table) and `payment_intent.succeeded` (Payment Element checkout at `/products/specops/checkout`) into `.data/stripe-fulfillments.jsonl`.
+
+**Deploy note:** marketing pages stay prerendered; checkout + `/api/*` need the Node adapter (`@astrojs/node`).
+
 ## Pre-launch checklist
 
 - [ ] Team section on `/company` has placeholder titles, no names
@@ -105,6 +156,8 @@ Forms) or an Astro adapter + API route.
 - [ ] SpecOps waitlist form action (must accept multipart)
 - [ ] Blog subscribe action
 - [ ] Replace rsms.me font loading with self-hosted Inter
+- [ ] Stripe test keys + webhook verified end-to-end
+- [x] Spec Ops Product catalog synced via `pnpm stripe:sync-specops` (sandbox)
 
 ## Colophon
 

@@ -2,25 +2,38 @@
   "name": "reardon-systems",
   "type": "module",
   "version": "0.1.0",
-  "engines": { "node": ">=22.12.0" },
+  "engines": {
+    "node": ">=22.12.0"
+  },
   "packageManager": "pnpm@10.33.3",
   "scripts": {
     "dev": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
-    "check": "astro check"
+    "check": "astro check",
+    "stripe:sync-specops": "node scripts/stripe-sync-specops-catalog.mjs",
+    "vault:pull": "node scripts/vault-pull-env.mjs",
+    "vault:push": "node scripts/vault-push-env.mjs",
+    "vault:rotate-stripe": "node scripts/vault-rotate-stripe.mjs",
+    "vault:bootstrap-dev": "bash scripts/vault-bootstrap-dev.sh"
   },
   "dependencies": {
-    "astro": "^5.0.0",
+    "@tailwindcss/typography": "^0.5.15",
     "@tailwindcss/vite": "^4.0.0",
+    "astro": "^5.0.0",
+    "stripe": "^22.6.2",
     "tailwindcss": "^4.0.0",
-    "@tailwindcss/typography": "^0.5.15"
+    "yaml": "^2.9.1"
   },
   "devDependencies": {
     "@astrojs/check": "^0.9.0",
+    "@astrojs/node": "^9.4.3",
     "typescript": "^5.6.0"
   },
   "pnpm": {
-    "onlyBuiltDependencies": ["esbuild", "sharp"]
+    "onlyBuiltDependencies": [
+      "esbuild",
+      "sharp"
+    ]
   }
 }

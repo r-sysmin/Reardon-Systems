@@ -8,6 +8,30 @@ astro dev --background
 
 Manage the background server with `astro dev stop`, `astro dev status`, and `astro dev logs`.
 
+## Secrets (HashiCorp Vault)
+
+**Vault is the source of truth.** `.env` is materialized via `pnpm vault:pull` — never wipe or blank secrets to “clean up.” Full protocol: [`docs/secrets-vault.md`](docs/secrets-vault.md).
+
+```bash
+export VAULT_ADDR=…   # or local: pnpm vault:bootstrap-dev
+pnpm vault:pull       # ENV=prod|dev
+# Seed / update from local .env: pnpm vault:push
+# Promote STRIPE_SECRET_KEY_NEXT → active: pnpm vault:rotate-stripe
+```
+
+## Stripe (required for Spec Ops billing)
+
+Official agent stack: https://docs.stripe.com/development · https://docs.stripe.com/agents · https://docs.stripe.com/mcp
+
+**Load first:** skill `api-as-skill` — the API is the indexed expertise substrate; stub the server from the spec before inventing UI.
+
+1. In Cursor chat, run **`/add-plugin stripe`** (enables Stripe MCP + skills).
+2. Workspace skills also live under `.agents/skills/stripe-best-practices` and `stripe-docs`.
+3. Prefer **Stripe Node SDK** (`stripe` package) + MCP `stripe_api_*` tools over inventing Dashboard paste flows.
+4. Spec Ops is **subscriptions** → Billing Prices + [Pricing Table](https://docs.stripe.com/payments/checkout/pricing-table) → Checkout Sessions. Do **not** model renewals as raw PaymentIntents.
+5. Catalog sync: `STRIPE_SECRET_KEY=sk_test_… pnpm stripe:sync-specops` (SDK). Pricing Table UI is Dashboard-only (`prctbl_…` → `PUBLIC_STRIPE_PRICING_TABLE_ID`).
+6. Webhooks are required (`checkout.session.*`, `customer.subscription.*`, `invoice.*`).
+
 ## Documentation
 
 Full documentation: https://docs.astro.build
