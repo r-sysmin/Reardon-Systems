@@ -75,11 +75,14 @@ jobs:
             echo "  $path -> $code"
             [ "$code" = "200" ] || fail=1
           done
-          # API route is reachable (405/400 here, but not 404/403).
-          code=$(curl -s -o /dev/null -w '%{http_code}' -H 'Origin: https://reardonsystems.com' \
+          # API route through the edge proxy (the real path). Probing :8085
+          # directly bypasses the proxy's X-Forwarded-* headers, so the CSRF
+          # origin check correctly rejects it.
+          code=$(curl -s -o /dev/null -w '%{http_code}' \
+            -H 'Host: reardonsystems.com' -H 'Origin: https://reardonsystems.com' \
             -X POST -F 'name=deploy-probe' -F 'email=deploy-probe@reardonsystems.com' \
-            http://127.0.0.1:8085/api/waitlist || echo fail)
-          echo "  POST /api/waitlist -> $code"
+            http://127.0.0.1/api/waitlist || echo fail)
+          echo "  POST /api/waitlist (via fafo-nginx) -> $code"
           case "$code" in 303|200) : ;; *) fail=1 ;; esac
           code=$(curl -s -o /dev/null -w '%{http_code}' -H 'Host: reardonsystems.com' http://127.0.0.1/ || echo fail)
           echo "  via fafo-nginx -> $code"
