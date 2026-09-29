@@ -12,7 +12,7 @@ The question is not unreasonable. Most of the people asking it have lived throug
 That mental model was accurate. It is not accurate anymore.
 ## What actually changed
 The reason private infrastructure used to be slow was not that it was private. It was that the tooling around it was built for a world where provisioning was a manual process and every change went through a review board.
-The tooling caught up. Kubernetes, GitOps, Terraform, Pulumi, Crossplane — none of these care whether they are talking to AWS or to a rack in a colo. The developer experience is defined by the interface, not the substrate.
+The tooling caught up. Kubernetes, GitOps, Terraform, Pulumi, Crossplane: none of these care whether they are talking to AWS or to a rack in a colo. The developer experience is defined by the interface, not the substrate.
 What developers actually touch:
 - **A portal** where they open a PR to add a service, environment, or secret
 - **A preview environment** that spins up per pull request
@@ -39,7 +39,7 @@ This is measurable. A pilot should measure all four against the baseline before,
 ## The honest tradeoffs
 Private infrastructure is not free. It has real costs that public cloud does not:
 **You own the failure modes.** When the hypervisor has a bad day, there is no status page to check. You are the status page. This means you need SRE capacity, or you need to buy it under a managed-operate engagement.
-**Capacity planning becomes your job.** The upside of public cloud is that you can scale elastically for free. The downside of private is that you have to forecast. For steady-state workloads, this is a feature. For genuinely spiky demand, it is a problem — which is why the hybrid answer exists.
+**Capacity planning becomes your job.** The upside of public cloud is that you can scale elastically for free. The downside of private is that you have to forecast. For steady-state workloads, this is a feature. For genuinely spiky demand, it is a problem. That is why the hybrid answer exists.
 **You are on the hook for upgrades.** Kubernetes versions, OS patches, driver updates, CVE responses. All of it. This is where managed operations earns its keep.
 None of these tradeoffs are fatal. They are just real. The teams that struggle with repatriation are usually the teams that did not plan for them.
 ## The pilot as the answer
@@ -58,7 +58,7 @@ The teams that have done this successfully tend to share a few traits:
 - They started with a workload that was **steady-state and predictable**, not the hardest thing in the estate.
 - They invested in the **control plane first**, not the hardware.
 - They **kept the public cloud** for burst, managed services, and genuinely unpredictable demand.
-- They **measured everything** — cost, velocity, reliability — against a baseline set before the migration started.
+- They **measured everything** (cost, velocity, reliability) against a baseline set before the migration started.
 - They **did not frame this as anti-cloud.** It was a placement decision, not a religious one.
 That last point matters more than it sounds. The teams that framed repatriation as "we're leaving AWS" had a harder time than the teams that framed it as "we're moving the steady stuff off the meter and keeping the rest."
 The technology is not the hard part anymore. The tooling is mature enough that a competent platform team can build a private environment that developers do not hate.

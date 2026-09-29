@@ -19,7 +19,7 @@ The honest test: what percentage of the time is the workload running at 50% or m
 **2. Is the workload stateful?**
 Stateful workloads are painful to move because the state has gravity. Databases, message queues, and file stores all have data that has to go somewhere, and moving it is expensive and risky.
 The default answer for stateful workloads is to leave them where they are unless the cost savings are large enough to justify the migration complexity. In practice, this means most databases stay on public cloud unless they are very large and very steady.
-Stateless workloads — API services, workers, job runners — are much easier to move. They are the natural starting point for a repatriation.
+Stateless workloads (API services, workers, job runners) are much easier to move. They are the natural starting point for a repatriation.
 **3. What does the workload depend on?**
 This is the question that kills more repatriation plans than any other. A workload that looks simple on a diagram often turns out to depend on six managed services the team forgot about.
 The list of things to check:
@@ -37,14 +37,14 @@ Once you have answers to the three questions, the framework is straightforward.
 |---|---|---|
 | **Stateless** | **Private.** The strongest candidate. Move first. | **Public.** Autoscaling is cheap and effective. |
 | **Stateful** | **Depends.** Private if the data volume justifies it and migration risk is manageable. Otherwise public. | **Public.** Almost always. |
-The strongest candidates for private are stateless workloads with steady demand and minimal managed-service dependencies. This is not a coincidence — it is why every successful repatriation project starts with a workload in this quadrant.
+The strongest candidates for private are stateless workloads with steady demand and minimal managed-service dependencies. This is not a coincidence. It is why every successful repatriation project starts with a workload in this quadrant.
 ## Worked examples
 **A CI/CD runner fleet.**
 Runners are stateless, they run near-100% utilization during working hours, and they have minimal managed-service dependencies (they need a queue and a cache, both of which are easy to run on private infrastructure).
 This is a textbook private candidate. The cost savings are large because the workload is steady and the cloud pricing for compute-heavy CI is expensive.
 **A customer-facing API.**
 Depends on the traffic pattern. If the API has a steady baseline with peaks during business hours, the baseline belongs on private and the peaks belong on public. This is the classic hybrid pattern, and it is more common than teams realize.
-If the API is genuinely spiky — think a ticketing platform that spikes during on-sale events — keep it on public. Autoscaling is exactly the right tool for that shape.
+If the API is genuinely spiky (think a ticketing platform that spikes during on-sale events), keep it on public. Autoscaling is exactly the right tool for that shape.
 **A production database.**
 Almost always stays on public cloud unless it is very large, very steady, and the migration risk is acceptable. The managed-service benefits (backups, replication, patching, failover) are real and hard to replicate on private infrastructure without significant engineering investment.
 **An ML inference service.**

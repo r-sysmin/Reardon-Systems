@@ -13,7 +13,7 @@ const { Content } = await render(post);
 const fmt = (d: Date) =>
   d.toLocaleDateString("en-US", { year: "numeric", month: "short", day: "numeric" });
 ---
-<Base title={`${post.data.title} — Reardon Systems`} description={post.data.summary}>
+<Base title={`${post.data.title} | Reardon Systems`} description={post.data.summary}>
   <article class="mx-auto max-w-3xl px-6 py-24">
     <div class="text-xs font-bold uppercase tracking-widest text-electric">
       {post.data.category} · {post.data.readTime}
