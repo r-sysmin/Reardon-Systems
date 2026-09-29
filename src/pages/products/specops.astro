@@ -150,15 +150,30 @@ const beta = import.meta.env.PUBLIC_SPECOPS_BETA !== "false";
     <div class="lg:col-span-7">
       <div class="rounded-2xl border border-rule bg-white p-8">
         <h3 class="text-lg font-black">Join the Cohort 2 waitlist</h3>
+        {/* Rendered hidden; revealed client-side from ?waitlist=… (this page is static). */}
+        <p id="wl-success" hidden class="mt-6 rounded-lg border border-electric/40 bg-warm px-4 py-3 text-sm text-navy" role="status">
+          Thanks — you're on the list. We'll reach out as spots open for Cohort 2.
+        </p>
+        <p id="wl-error" hidden class="mt-6 rounded-lg border border-signal/50 bg-warm px-4 py-3 text-sm text-navy" role="alert">
+          Something went wrong sending that. Please check your name and email and try again.
+        </p>
+        <script is:inline>
+          (() => {
+            const status = new URLSearchParams(location.search).get("waitlist");
+            if (!status) return;
+            document.getElementById(status === "success" ? "wl-success" : "wl-error")
+              ?.removeAttribute("hidden");
+          })();
+        </script>
         {/*
-          TODO: Replace ACTION_URL with your form endpoint.
-          Note: file uploads require either a form service that accepts
-          multipart (Basin, Formspree with files enabled) or a server adapter.
+          Posts to /api/waitlist (Astro on-demand route; `prerender = false`).
+          Optional file uploads require a runtime that serves API routes — the
+          static host alone cannot accept multipart form posts.
         */}
         <form
           class="mt-6 grid gap-4"
           method="POST"
-          action="ACTION_URL"
+          action="/api/waitlist"
           enctype="multipart/form-data"
         >
           <div>

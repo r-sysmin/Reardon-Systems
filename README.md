@@ -93,9 +93,14 @@ The site builds to pure static HTML. Deploy `dist/` to any static host:
 
 ### Forms
 
-The contact form and SpecOps waitlist form have placeholder `action="ACTION_URL"`
-attributes. Before launch, replace with a form service (Formspree, Basin, Netlify
-Forms) or an Astro adapter + API route.
+The SpecOps waitlist form posts to the on-demand API route
+[`src/pages/api/waitlist.ts`](src/pages/api/waitlist.ts) (`prerender = false`),
+which records submissions to `.data/waitlist.ndjson` and stores optional uploads
+under `.data/waitlist-uploads/`. It needs a Node runtime to serve the route.
+
+The contact form and blog newsletter form still have placeholder
+`action="ACTION_URL"` attributes. Replace them with a form service (Formspree,
+Basin, Netlify Forms) or another API route.
 
 ## Spec Ops Stripe (Pricing Table + Payment Element)
 

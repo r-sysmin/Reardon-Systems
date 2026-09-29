@@ -23,7 +23,7 @@ pnpm stripe:sync-specops
 Creates/updates Products, month+year Prices (lookup keys `specops_<plan>_<interval>`), and marketing features from `includes`. IDs land in `.data/stripe-catalog.json`.
 
 **Stripe Pricing Table (embed on site):** Dashboard only — no create API.  
-[Test mode Pricing tables](https://dashboard.stripe.com/test/pricing-tables) → add Pro / Pro+ / Business → copy `prctbl_…` into `PUBLIC_STRIPE_PRICING_TABLE_ID`. Site mounts `<stripe-pricing-table>` when `PUBLIC_SPECOPS_BETA=false`.
+[Test mode Pricing tables](https://dashboard.stripe.com/test/pricing-tables) → add Pro / Pro+ / Business → copy `prctbl_…` into `PUBLIC_STRIPE_PRICING_TABLE_ID`. The site always mounts `<stripe-pricing-table>`; while `PUBLIC_SPECOPS_BETA=true` a full-size overlay sends Buy clicks to the waitlist (`#access`) instead of Checkout.
 
 Machine-readable: [`src/content/specops-plans/catalog.yaml`](../src/content/specops-plans/catalog.yaml)
 
