@@ -13,9 +13,16 @@ yarn-error.log*
 pnpm-debug.log*
 
 
-# environment variables
+# environment variables (materialized from Vault — see docs/secrets-vault.md)
 .env
 .env.production
+.env.local
+
+# Vault local token (never commit)
+.vault-token
+
+# Stripe webhook fulfillment log (local)
+.data/
 
 # macOS-specific files
 .DS_Store
