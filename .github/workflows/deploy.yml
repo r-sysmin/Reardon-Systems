@@ -12,7 +12,7 @@ concurrency:
 jobs:
   build-and-deploy:
     runs-on: [self-hosted, reardon]
-    timeout-minutes: 15
+    timeout-minutes: 20
 
     steps:
       - name: Check out
@@ -22,12 +22,6 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version-file: .nvmrc
-
-      - name: Install dependencies
-        run: pnpm install --frozen-lockfile
-
-      - name: Build
-        run: pnpm build
 
       - name: Tag current image for rollback
         run: |
@@ -39,27 +33,37 @@ jobs:
             echo "No existing image to tag"
           fi
 
-      - name: Stage build output
+      - name: Build and load runtime image
         run: |
           set -euo pipefail
-          SITE=/opt/hosting/sites/reardonsystems
-          rm -rf "$SITE/html.new" "$SITE/html.old"
-          cp -a dist "$SITE/html.new"
-          find "$SITE/html.new" -type d -exec chmod 755 {} \;
-          find "$SITE/html.new" -type f -exec chmod 644 {} \;
-          test -f "$SITE/html.new/index.html"
-          if [ -d "$SITE/html" ]; then mv "$SITE/html" "$SITE/html.old"; fi
-          mv "$SITE/html.new" "$SITE/html"
-          echo "${GITHUB_SHA::7}" > "$SITE/.deployed-commit"
+          # PUBLIC_* values are inlined into the client bundle at build time and
+          # are not secrets (they ship to browsers). They are read from the
+          # site's public env file on the runner host if present.
+          PUBENV=/opt/hosting/sites/reardonsystems/.env
+          if [ -f "$PUBENV" ]; then
+            set -a; . "$PUBENV"; set +a
+            echo "Loaded public build config from $PUBENV"
+          else
+            echo "::warning::No $PUBENV; PUBLIC_* build args will be empty"
+          fi
+          ARGS=""
+          for v in PUBLIC_SPECOPS_BETA PUBLIC_STRIPE_PRICING_TABLE_ID PUBLIC_STRIPE_PUBLISHABLE_KEY; do
+            val="${!v:-}"
+            [ -n "$val" ] && ARGS="$ARGS --build-arg $v=$val"
+          done
+          # shellcheck disable=SC2086
+          docker build -f Dockerfile.runtime $ARGS -t reardonsystems:latest .
+          docker image inspect reardonsystems:latest --format 'image built: {{.Id}}'
 
-      - name: Rebuild and restart container
+      - name: Restart container
         run: |
           set -euo pipefail
           SITE=/opt/hosting/sites/reardonsystems
-          docker build -f "$SITE/Dockerfile.static" -t reardonsystems:latest "$SITE"
+          mkdir -p "$SITE/data"
           docker rm -f reardonsystems >/dev/null 2>&1 || true
-          docker run -d --name reardonsystems --restart unless-stopped -p 8085:80 reardonsystems:latest >/dev/null
-          sleep 2
+          docker run -d --name reardonsystems --restart unless-stopped -p 8085:4321 \
+            -v "$SITE/data:/app/.data" reardonsystems:latest >/dev/null
+          sleep 5
           docker ps --filter name=reardonsystems --format '{{.Names}} {{.Status}}'
 
       - name: Verify
@@ -71,6 +75,12 @@ jobs:
             echo "  $path -> $code"
             [ "$code" = "200" ] || fail=1
           done
+          # API route is reachable (405/400 here, but not 404/403).
+          code=$(curl -s -o /dev/null -w '%{http_code}' -H 'Origin: https://reardonsystems.com' \
+            -X POST -F 'name=deploy-probe' -F 'email=deploy-probe@reardonsystems.com' \
+            http://127.0.0.1:8085/api/waitlist || echo fail)
+          echo "  POST /api/waitlist -> $code"
+          case "$code" in 303|200) : ;; *) fail=1 ;; esac
           code=$(curl -s -o /dev/null -w '%{http_code}' -H 'Host: reardonsystems.com' http://127.0.0.1/ || echo fail)
           echo "  via fafo-nginx -> $code"
           [ "$code" = "200" ] || fail=1
@@ -78,20 +88,16 @@ jobs:
             echo "::error::Deployment verification failed"
             exit 1
           fi
+          git rev-parse --short HEAD > /opt/hosting/sites/reardonsystems/.deployed-commit
           echo "Deployed ${GITHUB_SHA::7} successfully"
 
       - name: Roll back on failure
         if: failure()
         run: |
           set -uo pipefail
-          SITE=/opt/hosting/sites/reardonsystems
-          if [ -d "$SITE/html.old" ]; then
-            rm -rf "$SITE/html"
-            mv "$SITE/html.old" "$SITE/html"
-            echo "Restored previous build output"
-          fi
           if docker image inspect reardonsystems:previous >/dev/null 2>&1; then
             docker rm -f reardonsystems >/dev/null 2>&1 || true
-            docker run -d --name reardonsystems --restart unless-stopped -p 8085:80 reardonsystems:previous >/dev/null
+            docker run -d --name reardonsystems --restart unless-stopped -p 8085:4321 \
+              -v /opt/hosting/sites/reardonsystems/data:/app/.data reardonsystems:previous >/dev/null
             echo "Rolled back to reardonsystems:previous"
           fi
