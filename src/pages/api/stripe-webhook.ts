@@ -54,7 +54,9 @@ function fulfillCheckoutSession(
  */
 export const POST: APIRoute = async ({ request }) => {
   const signature = request.headers.get("stripe-signature");
-  const webhookSecret = import.meta.env.STRIPE_WEBHOOK_SECRET;
+  // Runtime secret: read process.env so the running container supplies it
+  // (import.meta.env is inlined at build time and would be empty here).
+  const webhookSecret = process.env.STRIPE_WEBHOOK_SECRET;
 
   if (!signature || !webhookSecret) {
     return new Response(

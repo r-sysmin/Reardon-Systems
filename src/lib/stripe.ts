@@ -10,7 +10,10 @@ const API_VERSION = "2026-08-26.dahlia" as const;
  * @see https://docs.stripe.com/mcp
  */
 export function getStripe(): Stripe {
-  const key = import.meta.env.STRIPE_SECRET_KEY;
+  // Runtime secret, not a build-time PUBLIC_ value. import.meta.env would
+  // inline this (as empty) at build time; read process.env so the running
+  // container picks it up from its environment.
+  const key = process.env.STRIPE_SECRET_KEY;
   if (!key) {
     throw new Error(
       "Missing STRIPE_SECRET_KEY. Prefer a restricted/agent key (rk_) from the Stripe Dashboard; test/sandbox first.",

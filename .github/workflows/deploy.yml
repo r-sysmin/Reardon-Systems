@@ -60,9 +60,15 @@ jobs:
           set -euo pipefail
           SITE=/opt/hosting/sites/reardonsystems
           mkdir -p "$SITE/data"
+          # Runtime secrets come from Vault (source of truth), materialized by
+          # the runner into a 600 env file. Fails the deploy if Vault is sealed
+          # or login fails, rather than shipping checkout that silently errors.
+          "$SITE/fetch-runtime-secrets.sh"
           docker rm -f reardonsystems >/dev/null 2>&1 || true
           docker run -d --name reardonsystems --restart unless-stopped -p 8085:4321 \
-            -v "$SITE/data:/app/.data" reardonsystems:latest >/dev/null
+            -v "$SITE/data:/app/.data" \
+            --env-file "$SITE/.env.runtime" \
+            reardonsystems:latest >/dev/null
           sleep 5
           docker ps --filter name=reardonsystems --format '{{.Names}} {{.Status}}'
 
@@ -74,6 +80,14 @@ jobs:
             code=$(curl -s -o /dev/null -w '%{http_code}' "http://127.0.0.1:8085$path" || echo fail)
             echo "  $path -> $code"
             [ "$code" = "200" ] || fail=1
+          done
+          # Runtime secrets must be present in the container environment.
+          for v in STRIPE_SECRET_KEY STRIPE_WEBHOOK_SECRET; do
+            if docker exec reardonsystems sh -c "[ -n \"\$$v\" ]"; then
+              echo "  $v -> present"
+            else
+              echo "::error::$v missing from container env"; fail=1
+            fi
           done
           # API route through the edge proxy (the real path). Probing :8085
           # directly bypasses the proxy's X-Forwarded-* headers, so the CSRF
@@ -101,6 +115,8 @@ jobs:
           if docker image inspect reardonsystems:previous >/dev/null 2>&1; then
             docker rm -f reardonsystems >/dev/null 2>&1 || true
             docker run -d --name reardonsystems --restart unless-stopped -p 8085:4321 \
-              -v /opt/hosting/sites/reardonsystems/data:/app/.data reardonsystems:previous >/dev/null
+              -v /opt/hosting/sites/reardonsystems/data:/app/.data \
+              --env-file /opt/hosting/sites/reardonsystems/.env.runtime \
+              reardonsystems:previous >/dev/null
             echo "Rolled back to reardonsystems:previous"
           fi
