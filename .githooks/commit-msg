@@ -1,0 +1,14 @@
+#!/usr/bin/env bash
+# Reject commits whose message still attributes Cursor as co-author.
+set -euo pipefail
+
+MSG_FILE="${1:?commit message file}"
+HOOK_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+# shellcheck source=_cursor-coauthor-guard.sh
+source "$HOOK_DIR/_cursor-coauthor-guard.sh"
+
+if cursor_coauthor_present "$MSG_FILE"; then
+  echo "commit-msg hook: Co-authored-by Cursor is not allowed in this repository." >&2
+  echo "Remove the trailer (or run: pnpm hooks:install if hooks are missing)." >&2
+  exit 1
+fi

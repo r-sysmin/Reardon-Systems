@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+# Strip Cursor Co-authored-by lines before the message is finalized (e.g. agent injection).
+set -euo pipefail
+
+MSG_FILE="${1:?commit message file}"
+HOOK_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+# shellcheck source=_cursor-coauthor-guard.sh
+source "$HOOK_DIR/_cursor-coauthor-guard.sh"
+
+strip_cursor_coauthor_lines "$MSG_FILE"

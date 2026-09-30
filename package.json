@@ -15,7 +15,9 @@
     "vault:pull": "node scripts/vault-pull-env.mjs",
     "vault:push": "node scripts/vault-push-env.mjs",
     "vault:rotate-stripe": "node scripts/vault-rotate-stripe.mjs",
-    "vault:bootstrap-dev": "bash scripts/vault-bootstrap-dev.sh"
+    "vault:bootstrap-dev": "bash scripts/vault-bootstrap-dev.sh",
+    "hooks:install": "bash scripts/setup-git-hooks.sh",
+    "prepare": "bash scripts/setup-git-hooks.sh"
   },
   "dependencies": {
     "@tailwindcss/typography": "^0.5.15",

@@ -1,0 +1,11 @@
+---
+description: Never add Co-authored-by Cursor; repo hooks reject it
+alwaysApply: true
+---
+
+# No Cursor co-author trailers
+
+- Do **not** add `Co-authored-by:` lines that mention Cursor (any casing) or `cursoragent@cursor.com`.
+- Do **not** pass `git commit --trailer` for Cursor / Made-with attribution.
+- This repo enforces via `.githooks/commit-msg` and `.githooks/prepare-commit-msg`. Run `pnpm hooks:install` after clone if commits are not blocked.
+- Scrubbing an **already pushed** commit message requires an explicit user request for history rewrite (rebase/amend + force-push); hooks only block **future** commits.

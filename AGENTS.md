@@ -32,6 +32,14 @@ Official agent stack: https://docs.stripe.com/development · https://docs.stripe
 5. Catalog sync: `STRIPE_SECRET_KEY=sk_test_… pnpm stripe:sync-specops` (SDK). Pricing Table UI is Dashboard-only (`prctbl_…` → `PUBLIC_STRIPE_PRICING_TABLE_ID`).
 6. Webhooks are required (`checkout.session.*`, `customer.subscription.*`, `invoice.*`).
 
+## Git commit messages (no Cursor co-author)
+
+Agents must **not** add `Co-authored-by:` trailers that mention Cursor or `cursoragent@cursor.com`, and must not use `git commit --trailer` for attribution.
+
+Enforcement: tracked hooks in `.githooks/` (`commit-msg` rejects; `prepare-commit-msg` strips injection). After clone, `pnpm install` or `pnpm hooks:install` sets `core.hooksPath=.githooks`. Bypassing hooks with `--no-verify` is prohibited for agent commits.
+
+Removing attribution from **already pushed** commits requires an explicit history-rewrite request from the operator.
+
 ## Documentation
 
 Full documentation: https://docs.astro.build
