@@ -74,10 +74,15 @@ export const POST: APIRoute = async ({ request }) => {
       { status: 200, headers: { "content-type": "application/json" } },
     );
   } catch (err) {
-    const message = err instanceof Error ? err.message : "Stripe error";
-    return new Response(JSON.stringify({ error: message }), {
-      status: 500,
-      headers: { "content-type": "application/json" },
-    });
+    console.error("[create-payment-intent]", err);
+    return new Response(
+      JSON.stringify({
+        error: "Unable to start payment. Try again or contact support.",
+      }),
+      {
+        status: 500,
+        headers: { "content-type": "application/json" },
+      },
+    );
   }
 };
